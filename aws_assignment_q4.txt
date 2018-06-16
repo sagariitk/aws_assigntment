@@ -1,0 +1,81 @@
+
+#command to be run on out personal ec2-instance to create stack named sagarT providing the url of template for ec2-instances creation
+#template is attached below or you can tak a look on s3 bucket also
+
+aws cloudformation create-stack --stack-name sagarT --template-url https://s3.amazonaws.com/sagar111/cloudformation.txt
+
+
+#cloudformation template for creation of two instances from load to production passwordless connection is there
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources": {
+        "sagarEC2load": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "AvailabilityZone": "us-east-1a",
+                "ImageId": "ami-14c5486b",
+                "SecurityGroupIds" : ["sg-ee3fc3a5","sg-1b607b53"],
+                "InstanceType" : "t2.micro",
+                "Tags" : [
+                {
+                "Key" : "name",
+                "Value" : "sagar111"
+                },
+                {
+                "Key" : "username",
+                "Value" : "sagar.yadav"
+                },
+                {
+                "Key" : "username",
+                "Value" : "sagar.yadav"
+                },
+                {
+                "Key" : "project",
+                "Value" : "PE_training"
+                }
+                ],
+                "KeyName": "sagar",
+                "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
+                     "#!/bin/bash -xe\n",
+                     "sudo -u ec2-user ssh-keygen -b 2048 -t rsa -f /home/ec2-user/.ssh/id_rsa -q -N \"\" \n",
+                     "aws s3 cp /home/ec2-user/.ssh/id_rsa.pub s3://sagar111/id_rsa.pub\n"
+                ]]}}
+            }
+        },
+        "sagarEC2prod": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "AvailabilityZone": "us-east-1a",
+                "ImageId": "ami-14c5486b",
+                "SecurityGroupIds" : ["sg-ee3fc3a5","sg-1b607b53"],
+                "InstanceType" : "t2.micro",
+                "Tags" : [
+                {
+                "Key" : "name",
+                "Value" : "sagar222"
+                },
+                {
+                "Key" : "username",
+                "Value" : "sagar.yadav"
+                },
+                {
+                "Key" : "username",
+                "Value" : "sagar.yadav"
+                },
+                {
+                "Key" : "project",
+                "Value" : "PE_training"
+                }
+                ],
+                "KeyName": "sagar",
+                "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
+                     "#!/bin/bash -xe\n",
+                     "aws s3 cp s3://sagar111/id_rsa.pub /home/ec2-user/.ssh/id_rsa.pub\n",
+                     "cat /home/ec2-user/.ssh/id_rsa.pub >> /home/ec2-user/.ssh/authorized_keys\n",
+                     "chmod 700 /home/ec2-user/.ssh\n",
+                     "chmod 600 /home/ec2-user/.ssh/authorized_keys\n"
+                ]]}}
+            }
+        }
+    }
+}
