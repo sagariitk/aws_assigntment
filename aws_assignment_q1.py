@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import boto3
 
+#lambda function which will be triggerd by addition of element in S3 bucket named sagar111 and will replicate to S3 bukcet named sagar1111
 def lambda_handler(event, context):
     s3 = boto3.resource('s3')
     copy_source = {
