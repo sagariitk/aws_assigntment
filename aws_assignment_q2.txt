@@ -1,0 +1,38 @@
+#lambda function that will always throw an error because the dynamodb table name is provided wrong
+
+import boto3
+
+client=boto3.client('ec2')
+dynamo=boto3.client('dynamodb')
+
+def lambda_handler(event, context):
+    response = dynamo.scan(
+    TableName='sagarq',
+    )
+    item=response['Items']
+    return item
+    
+
+#then I made a python file on ec2 instance to invoke this function asyc type
+
+import boto3
+import json
+client=boto3.client('lambda')
+
+input={
+"input1":"something"
+}
+
+response = client.invoke_async(
+    FunctionName='string',
+    InvokeArgs=json.dumps(input)
+)
+
+print response
+
+#I printed the response and got the error with the error code 202
+ which says "The request has been accepted for processing, but the processing has not been completed.
+ The request might or might not eventually be acted upon, as it might be disallowed when processing actually takes place."
+
+Since I had not bucket named "sagarq" in the dynamodb so it might throw this error which says that 
+the request has been accepted but not eventually acted upon
