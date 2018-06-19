@@ -16,6 +16,7 @@ aws cloudformation create-stack --stack-name sagarT --template-url https://s3.am
                 "ImageId": "ami-14c5486b",
                 "SecurityGroupIds" : ["sg-ee3fc3a5","sg-1b607b53"],
                 "InstanceType" : "t2.micro",
+                "IamInstanceProfile" : "PE_trainee_Admin_role",
                 "Tags" : [
                 {
                 "Key" : "name",
@@ -49,6 +50,7 @@ aws cloudformation create-stack --stack-name sagarT --template-url https://s3.am
                 "ImageId": "ami-14c5486b",
                 "SecurityGroupIds" : ["sg-ee3fc3a5","sg-1b607b53"],
                 "InstanceType" : "t2.micro",
+                "IamInstanceProfile" : "PE_trainee_Admin_role",
                 "Tags" : [
                 {
                 "Key" : "name",
